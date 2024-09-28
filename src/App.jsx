@@ -13,6 +13,11 @@ const App = () => {
   const [searchPost, setSearchPost] = useState("");
   const [newPostTitle, setNewPostTitle] = useState("");
   const [newPostContent, setNewPostContent] = useState("");
+  const [singlePost, setSinglePost] = useState("");
+  const [singleError, setSingleError] = useState(null);
+  const [isSingleLoading, setIsSingleLoading] = useState(true);
+  const [editPostTitle, setEditPostTitle] = useState("");
+  const [editPostContent, setEditPostContent] = useState("");
 
   const randomId = () => new Date().getTime();
   const formattedDate = () =>
@@ -51,15 +56,47 @@ const App = () => {
   };
   const handleDeletePost = async (id) => {
     try {
-      const response = await api.delete(`/posts/${id}`);  
+      const response = await api.delete(`/posts/${id}`);
       console.log("Post deleted successfully:", response.data);
       setPosts(posts.filter((post) => post.id !== id));
       navigator("/");
     } catch (error) {
       console.log("Error deleting post:", error);
     }
-    
-  }
+  };
+
+  const handleEditPost = async (id) => {
+    try {
+      const response = await api.get(`/posts/${id}`);
+      console.log("Post fetched successfully:", response.data);
+      setEditPostTitle(response.data.title);
+      setEditPostContent(response.data.content);
+      navigator(`/post/${id}/edit`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleEditPostSubmit = async (id) => {
+    const editedPost = {
+      id: id,
+      title: editPostTitle,
+      content: editPostContent,
+      datetime: formattedDate(),
+    };
+    try {
+      const response = await api.put(`/posts/${id}`, editedPost);
+      console.log("Post edited successfully:", response.data);
+      setPosts(posts.map((post) => (post.id === id ? editedPost : post)));
+      reset(setEditPostTitle, setEditPostContent);
+      navigator("/");
+    } catch (error) {
+      console.log(error);
+    }
+    setPosts(posts.map((post) => (post.id === id ? editedPost : post)));
+    reset(setEditPostTitle, setEditPostContent);
+    navigator("/");
+  };
   return (
     // main container
 
@@ -86,6 +123,18 @@ const App = () => {
         setNewPostContent={setNewPostContent}
         handleNewPostSubmit={handleNewPostSubmit}
         handleDeletePost={handleDeletePost}
+        singlePost={singlePost}
+        setSinglePost={setSinglePost}
+        singleError={singleError}
+        setSingleError={setSingleError}
+        isSingleLoading={isSingleLoading}
+        setIsSingleLoading={setIsSingleLoading}
+        handleEditPost={handleEditPost}
+        editPostTitle={editPostTitle}
+        setEditPostTitle={setEditPostTitle}
+        editPostContent={editPostContent}
+        setEditPostContent={setEditPostContent}
+        handleEditPostSubmit={handleEditPostSubmit}
       />
       <Footer />
     </div>

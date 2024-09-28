@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import { api } from "../../../utils/utils";
 import { useParams } from "react-router-dom";
 
-const SinglePost = ({handleDeletePost}) => {
+const SinglePost = ({handleDeletePost, singlePost, setSinglePost, singleError, isSingleLoading, setSingleError, setIsSingleLoading, handleEditPost}) => {
   const { id } = useParams();
 
-  const [singlePost, setSinglePost] = useState("");
-  const [singleError, setSingleError] = useState(null);
-  const [isSingleLoading, setIsSingleLoading] = useState(true);
+  
 
   useEffect(() => {
     const getPost = async () => {
@@ -45,9 +43,9 @@ const SinglePost = ({handleDeletePost}) => {
           <small className="text-space_cadet-700">{singlePost.datetime}</small>
           <p className="text-space_cadet-700">{singlePost.content}</p>
           <div className="flex gap-4">
-            <button type="button" className="px-4 py-2 bg-skobeloff-500 text-white rounded-lg shadow-md">Edit</button>
+            <button type="button" className="px-4 py-2 bg-skobeloff-500 text-white rounded-lg shadow-md" onClick={()=>handleEditPost(singlePost.id)}>Edit</button>
 
-            <button type="button" className="px-4 py-2 bg-jasper-400 text-white rounded-lg shadow-md" onClick={()=>handleDeletePost(post.id)}>Delete</button>
+            <button type="button" className="px-4 py-2 bg-jasper-400 text-white rounded-lg shadow-md" onClick={()=>handleDeletePost(singlePost.id)}>Delete</button>
           </div>
         </div>
       ) : (
