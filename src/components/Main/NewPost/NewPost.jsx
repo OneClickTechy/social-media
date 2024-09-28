@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
+import dataContext from "../../../context/dataContext";
 
-const NewPost = ({
-  newPostTitle,
-  setNewPostTitle,
-  newPostContent,
-  setNewPostContent,
-  handleNewPostSubmit,
-}) => {
+const NewPost = () => {
+  const {
+    newPostTitle,
+    setNewPostTitle,
+    newPostContent,
+    setNewPostContent,
+    handleNewPostSubmit,
+  } = useContext(dataContext);
   return (
     <form
       onSubmit={(e) => e.preventDefault()}
@@ -30,7 +32,7 @@ const NewPost = ({
         <textarea
           name="postContent"
           id="postContent"
-         className="bg-misty_rose-500 p-2 rounded-lg shadow-md w-full resize-none min-h-32"
+          className="bg-misty_rose-500 p-2 rounded-lg shadow-md w-full resize-none min-h-32"
           value={newPostContent}
           onChange={(e) => setNewPostContent(e.target.value)}
         ></textarea>

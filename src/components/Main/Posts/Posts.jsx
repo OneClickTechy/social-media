@@ -1,37 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { api } from "../../../utils/utils";
+import dataContext from "../../../context/dataContext";
 
-const Posts = ({ posts, setPosts, error, isLoading, setError, setIsLoading}) => {
- 
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await api.get("/posts");
-        setPosts(response.data.reverse());
-      } catch (error) {
-        setError(error);
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    (async () => await fetchPosts())();
-  }, []);
+const Posts = () => {
+  const { filteredPosts, setPosts, error, isLoading, setError, setIsLoading } =
+    useContext(dataContext);
+  
 
   return (
     <section className="p-6 bg-space_cadet-500">
       <h2 className="text-space_cadet-900 text-3xl font-bold mb-4">Posts</h2>
       <article>
         {isLoading && <p className="text-misty_rose-500">Loading...</p>}
-        {error && !posts && !isLoading && (
+        {error && !filteredPosts && !isLoading && (
           <p className="text-jasper-400">{error}</p>
         )}
-        {posts && posts.length > 0 && !error ? (
+        {filteredPosts && filteredPosts.length > 0 && !error ? (
           <ul className="space-y-4">
-            {posts.map((post) => (
+            {filteredPosts.map((post) => (
               <li
                 key={post.id}
                 className="p-4 border border-jasper-400 bg-white rounded-lg shadow-md transition-transform transform hover:scale-[99%]"

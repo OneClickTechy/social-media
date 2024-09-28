@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
+import dataContext from "../../../context/dataContext";
 
-const EditPost = ({
-  editPostTitle,
-  setEditPostTitle,
-  editPostContent,
-  setEditPostContent,
-  handleEditPostSubmit,
-}) => {
-
+const EditPost = ({}) => {
+  const {
+    editPostTitle,
+    setEditPostTitle,
+    editPostContent,
+    setEditPostContent,
+    handleEditPostSubmit,
+  } = useContext(dataContext);
   const { id } = useParams();
 
   return (
@@ -35,15 +36,13 @@ const EditPost = ({
           name="postContent"
           id="postContent"
           className="bg-misty_rose-500 p-2 rounded-lg shadow-md w-full resize-none min-h-32"
-          
           value={editPostContent}
           onChange={(e) => setEditPostContent(e.target.value)}
-          
         ></textarea>
         <button
           type="submit"
           className="bg-skobeloff-500 px-4 py-2 rounded-lg shadow-md text-white w-full sm:w-auto"
-          onClick={()=>handleEditPostSubmit(id)}
+          onClick={() => handleEditPostSubmit(id)}
         >
           Post
         </button>

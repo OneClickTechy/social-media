@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaSearch } from "react-icons/fa";
+import dataContext from "../../../context/dataContext";
 
 
-const PostSearch = ({searchPost, setSearchPost}) => {
-  
+const PostSearch = () => {
+  const {searchPost, setSearchPost} = useContext(dataContext);
   return (
     <form onSubmit={(e) => e.preventDefault()} className="w-full col-span-2 md:col-span-1">
       <label htmlFor="searchPost" className="absolute left-[-9999px]">
